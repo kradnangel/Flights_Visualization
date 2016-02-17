@@ -1,0 +1,281 @@
+1988
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 14
+	5 most frequent values:
+		DL:	753983
+		AA:	694757
+		UA:	587144
+		US:	494383
+		PI:	470957
+	Max length: 6
+
+Row count: 5202096
+1989
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 13
+	5 most frequent values:
+		DL:	783320
+		AA:	723252
+		US:	712342
+		UA:	574674
+		NW:	451752
+	Max length: 6
+
+Row count: 5041200
+1990
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 12
+	5 most frequent values:
+		US:	1002485
+		DL:	824062
+		AA:	712060
+		UA:	606713
+		NW:	461745
+	Max length: 6
+
+Row count: 5270893
+1991
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 12
+	5 most frequent values:
+		US:	907184
+		DL:	874791
+		AA:	725191
+		UA:	630093
+		NW:	460230
+	Max length: 6
+
+Row count: 5076925
+1992
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	916593
+		US:	886305
+		AA:	782371
+		UA:	639349
+		NW:	474931
+	Max length: 2
+
+Row count: 5092157
+1993
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	898896
+		US:	833131
+		AA:	786696
+		UA:	649086
+		WN:	488332
+	Max length: 2
+
+Row count: 5070501
+1994
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	874526
+		US:	857906
+		AA:	722277
+		UA:	638750
+		WN:	565426
+	Max length: 2
+
+Row count: 5180048
+1995
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	884019
+		US:	778835
+		UA:	724807
+		WN:	693101
+		AA:	688471
+	Max length: 2
+
+Row count: 5327435
+1996
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	888306
+		WN:	757419
+		UA:	735266
+		US:	728534
+		AA:	655539
+	Max length: 2
+
+Row count: 5351983
+1997
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	921850
+		WN:	794849
+		UA:	743847
+		US:	718751
+		AA:	663954
+	Max length: 2
+
+Row count: 5411843
+1998
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	915095
+		WN:	815069
+		UA:	748459
+		US:	696030
+		AA:	653919
+	Max length: 2
+
+Row count: 5384721
+1999
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		DL:	914130
+		WN:	853683
+		UA:	774370
+		US:	714430
+		AA:	692653
+	Max length: 2
+
+Row count: 5527884
+2000
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 11
+	5 most frequent values:
+		WN:	911699
+		DL:	908029
+		UA:	776559
+		US:	748624
+		AA:	742265
+	Max length: 2
+
+Row count: 5683047
+2001
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 12
+	5 most frequent values:
+		WN:	957145
+		DL:	835236
+		AA:	716985
+		UA:	704977
+		US:	688748
+	Max length: 2
+
+Row count: 5967780
+2002
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 10
+	5 most frequent values:
+		WN:	956745
+		AA:	852439
+		DL:	728758
+		UA:	587887
+		NW:	513331
+	Max length: 2
+
+Row count: 5271359
+2003
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 18
+	5 most frequent values:
+		WN:	958566
+		AA:	752241
+		DL:	660617
+		UA:	543957
+		NW:	499160
+	Max length: 2
+
+Row count: 6488540
+2004
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 19
+	5 most frequent values:
+		WN:	990404
+		AA:	698548
+		DL:	687638
+		UA:	555812
+		NW:	507286
+	Max length: 2
+
+Row count: 7129270
+2005
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 20
+	5 most frequent values:
+		WN:	1036034
+		AA:	673569
+		DL:	658302
+		MQ:	532032
+		OO:	517454
+	Max length: 2
+
+Row count: 7140596
+2006
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 20
+	5 most frequent values:
+		WN:	1099321
+		AA:	643597
+		MQ:	550088
+		OO:	548109
+		DL:	506086
+	Max length: 2
+
+Row count: 7141922
+2007
+  1. UniqueCarrier
+	<type 'unicode'>
+	Nulls: False
+	Unique values: 20
+	5 most frequent values:
+		WN:	1168871
+		AA:	633857
+		OO:	597882
+		MQ:	540494
+		UA:	490002
+	Max length: 2
+
+Row count: 7453215
+All done

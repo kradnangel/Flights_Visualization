@@ -5,8 +5,9 @@ def readCSV(filename):
     with open(filename, 'rb') as csvfile:
         spamreader = csv.reader(csvfile, delimiter=' ', quotechar='|')
         data = map(lambda row: (''.join(row)).split(','), spamreader)
-    print "Reading Done!"
-    return data
+    print filename + " Reading Done!"
+    return data[0], data[1:]
 
-data = readCSV('2008.csv')
-print len(data)    
+titles, data = readCSV('1988.csv')
+print len(data)
+print titles
