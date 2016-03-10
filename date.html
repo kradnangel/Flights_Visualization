@@ -1,0 +1,76 @@
+<html>
+<head>
+    <title>date</title>
+    <!-- <meta http-equiv='Content-Type' content='text/html; charset=gb2312'> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+</head>
+
+<body>
+    <div>
+    <select id = 'year', name=YYYY onchange="YYYYMM(this.value)">
+    <option value="0">Year</option>     </select>
+    <select id = 'month', name=MM onchange="MMDD(this.value)">
+    <option value="0">Month</option>    </select>
+    <select id = 'day', name=DD>
+    <option value="0">Day</option>      </select>
+    </div>
+
+<script language="JavaScript">
+window.onload = function(){
+    strYYYY = document.getElementById("year").outerHTML;
+    strMM = document.getElementById("month").outerHTML;
+    strDD = document.getElementById("day").outerHTML;
+    MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+    //year
+    var MAX_YEAR = 2008;
+    var MIN_YEAR = 1988;
+    var str = strYYYY.substring(0, strYYYY.length - 9);
+    for (var i = MIN_YEAR; i < MAX_YEAR; i++) {
+        str += "<option value='" + i + "'> " + i + "</option>\r\n";
+    }
+    document.getElementById("year").outerHTML = str +"</select>";
+
+    //Month
+    var str = strMM.substring(0, strMM.length - 9);
+    for (var i = 1; i < 13; i++) {
+        str += "<option value='" + i + "'> " + i + "</option>\r\n";
+    }
+    document.getElementById("month").outerHTML = str +"</select>";
+
+    // document.getElementById("year").value = y;
+    // document.getElementById("month").value = new Date().getMonth() + 1;
+    var n = MonHead[new Date().getMonth()];
+    if (new Date().getMonth() ==1 && IsPinYear(YYYYvalue)) n++;
+    writeDay(n); //赋日期下拉框
+    // document.getElementById("day").value = new Date().getDate();
+}
+function YYYYMM(str) //年发生变化时日期发生变化(主要是判断闰平年)
+{
+    var MMvalue = document.getElementById("month").options[document.getElementById("month").selectedIndex].value;
+    if (MMvalue == ""){DD.outerHTML = strDD; return;}
+    var n = MonHead[MMvalue - 1];
+    if (MMvalue ==2 && IsPinYear(str)) n++;
+    writeDay(n)
+}
+function MMDD(str) //月发生变化时日期联动
+{
+    var YYYYvalue = document.getElementById("year").options[document.getElementById("year").selectedIndex].value;
+    if (str == ""){DD.outerHTML = strDD; return;}
+    var n = MonHead[str - 1];
+    if (str ==2 && IsPinYear(YYYYvalue)) n++;
+    writeDay(n)
+}
+function writeDay(n) //据条件写日期的下拉框
+{
+var s = strDD.substring(0, strDD.length - 9);
+for (var i=1; i<(n+1); i++)
+s += "<option value='" + i + "'> " + i + "</option>\r\n";
+document.getElementById("day").outerHTML = s +"</select>";
+}
+function IsPinYear(year)//判断是否闰平年
+{ return(0 == year%4 && (year%100 !=0 || year%400 == 0))}
+</script>
+</body>
+</html>
+

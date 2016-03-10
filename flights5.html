@@ -15,7 +15,7 @@
     path.arc {
       pointer-events: none;
       fill: none;
-      stroke: #000;
+      /*stroke: #000;*/
       /*stroke-width: 1;*/
       /*display: none;*/
     }
@@ -59,12 +59,10 @@
     <button id ="check" onclick="updateYear()">check</button>
     </div>
 
-    <div style="font-size:18px;">
     <!-- <form action="form_action.asp" method="get"> -->
-      Origin: <input type="text" id="Origin" name="Origin" size="10" style="display: block;"/>
-      Destination: <input type="text" id="Destination" name="Destination" size="10" style="display: block;"/>
+      Origin: <input type="text" name="Origin" size="10"/>
+      Destination: <input type="text" name="Destination" size="10"/>
       <button id ="check" onclick="updateAirport()">submit</button>
-    </div>
       <!-- <input type="submit" value="Submit" /> -->
     <!-- </form> -->
 <!-- <div class="row">
@@ -81,18 +79,14 @@
     </h2>
     <!-- <h3>Click on this text to update the chart with new data values (once).</h3> -->
 
-    <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
+    <div style="position:absolute;bottom:0;font-size:18px;">
       <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
     </div>
-
-    <div style="font-size:18px;">
+<!--     <div style="font-size:18px;">
       <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
-    </div>
+    </div> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
-    <script type="text/javascript" src="jquery.tipsy.js"></script>
-    <link href="tipsy.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="d3/d3.js"></script>
     <script type="text/javascript" src="d3/d3.csv.js"></script>
     <script type="text/javascript" src="d3/d3.geo.js"></script>
@@ -146,6 +140,9 @@
     d3.select("input[type=checkbox]").on("change", function() {
       cells.classed("voronoi", this.checked);
     });
+
+    //// Read .csv and deal with the data
+    d3.csv("data-total-flights/"+year+"-total-flights.csv", function(flights) {
       var linksByOrigin = {},
           countByAirport = {},
           locationByAirport = {},
@@ -158,8 +155,6 @@
           .source(function(d) { return locationByAirport[d.source]; })
           .target(function(d) { return locationByAirport[d.target]; })
 
-    //// Read .csv and deal with the data
-    d3.csv("data-total-flights/"+year+"-total-flights.csv", function(flights) {
       // Read and process each flight information
       flights.forEach(function(flight) {
         var origin = flight.Origin,
@@ -202,41 +197,7 @@
             .attr("cy", function(d, i) { return positions[i][1]; })
             .attr("r", function(d, i) { return Math.sqrt(countByAirport[d.iata]) / CIRCLE_SIZE; })  //   / maxNumOfFlights
             .sort(function(a, b) { return countByAirport[b.iata] - countByAirport[a.iata]; });
-            // .append("svg:title")
-            // .text("123");
 
-$('svg circle').tipsy({ 
-        gravity: 'w', 
-        html: true, 
-        title: function() {
-          c = "Blue"
-          return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>'; 
-        }
-      });
-
-        if (!$("#showDelay").is(':checked')) {
-                  var polygons = d3.geom.voronoi(positions);  //Returns an array of polygons, one for each input vertex in the specified data array. Each polygon is an array of points, and each point is a two-element array of x and y positions.
-
-        // make each airports as a cell ???
-        var g = cells.selectAll("g")
-            .data(airports)
-          .enter().append("svg:g");
-
-        // draw all the air route paths
-        g.append("svg:path")
-            .attr("class", "cell")  //path.cell css
-            .attr("d", function(d, i) { return "M" + polygons[i].join("L") + "Z"; })
-            .on("mouseover", function(d, i) { d3.select("h2 span").text(d.airport); }); // text the airport mouseovered 
-
-        // draw connection based on path
-        g.selectAll("path.arc")
-            .data(function(d) {return linksByOrigin[d.iata] || []; })  //all air route here ???
-          .enter().append("svg:path")
-            .attr("d", function(d) { return path(arc(d));}) // draw lines!!!
-            .attr("class", "arc")
-            .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / 10000; });
-        }
-        else {
         d3.csv("delay/"+year+"-day-delay.csv", function(delays) {
          var  delayByAirport = {},
               delayByAirRoute = {},
@@ -250,7 +211,7 @@ $('svg circle').tipsy({
             delayByAirport[destination] = (delayByAirport[destination] || 0) + averageDelay;
             delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + averageDelay;
             if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
-              maxDelayForAirRoute = delayByAirRoute[[origin,destination]]/countByAirRoute[[origin, destination]];
+              maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
             }
           });
         console.log(maxDelayForAirRoute);
@@ -276,31 +237,23 @@ $('svg circle').tipsy({
             .attr("class", "arc")
             .style("stroke", function(d) {
               if (delayByAirRoute[[d.source, d.target]] >= 0) {
-                return "hsl(0,100%," + delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*10 +"%)"; 
+                return "hsl(0,100%," + delayByAirRoute[[d.source, d.target]]/200 +"%)"; 
               }
               else{
-                return "hsl(100,100%," + -delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*10 +"%)";  
+                return "hsl(100,100%," + -delayByAirRoute[[d.source, d.target]]/200 +"%)";  
               }
             })
             .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / 10000; });
         });
-      }
       });
     });
 
     updateAirport = function() {
-    var source = $("#Origin").val();
-    var target = $("#Destination").val();
-    console.log(target);
-    console.log(target == "");
     cells.selectAll("g")
           .selectAll("path.arc")
         .data(function(d) { return linksByOrigin[d.iata] || []; })
         .attr("d", function(d) { return path(arc(d));})
-        .style("display", function(d) { 
-          if ( ( (d.source == source) && ((target == "") || (d.target == target)) ) || ( (d.target == target) && ((source == "") || (d.source == source)) ) )
-            return "inline"; else return "none";
-        });
+        .style("display", "none");
     }
 
     updateYear = function() {
@@ -308,13 +261,17 @@ $('svg circle').tipsy({
         console.log(year);
         d3.select(document.getElementById("showYear")).text(year);
         d3.csv("data-total-flights/"+year+"-total-flights.csv", function(flights) {
-        linksByOrigin = {},
-        countByAirport = {},
-        locationByAirport = {},
-        positions = [],
-        countByAirRoute = {},
-        maxNumOfFlights = 1,
-        maxNumOfFlightsForAirRoute = 1;
+          var linksByOrigin = {},
+              countByAirport = {},
+              locationByAirport = {},
+              positions = [],
+              countByAirRoute = {},
+              maxNumOfFlights = 1,
+              maxNumOfFlightsForAirRoute = 1;
+
+          var arc = d3.geo.greatArc()
+              .source(function(d) { return locationByAirport[d.source]; })
+              .target(function(d) { return locationByAirport[d.target]; })
 
           // Read and process each flight information
           flights.forEach(function(flight) {
@@ -358,14 +315,6 @@ $('svg circle').tipsy({
                 .attr("r", function(d, i) { return Math.sqrt(countByAirport[d.iata]) / CIRCLE_SIZE; })  //   / maxNumOfFlights
                 .sort(function(a, b) { return countByAirport[b.iata] - countByAirport[a.iata]; });
 
-            if (!$("#showDelay").is(':checked')) {
-              cells.selectAll("g")
-                    .selectAll("path.arc")
-                  .data(function(d) { return linksByOrigin[d.iata] || []; })
-                  .attr("d", function(d) { return path(arc(d));})
-                  .style("stroke", "#000")
-                  .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / 10000; });
-            } else {
             d3.csv("delay/"+year+"-day-delay.csv", function(delays) {
              var  delayByAirport = {},
                   delayByAirRoute = {},
@@ -378,8 +327,8 @@ $('svg circle').tipsy({
                 delayByAirport[origin] = (delayByAirport[origin] || 0) + averageDelay;
                 delayByAirport[destination] = (delayByAirport[destination] || 0) + averageDelay;
                 delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + averageDelay;
-                if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]/countByAirRoute[[origin, destination]]) {
-                  maxDelayForAirRoute = delayByAirRoute[[origin,destination]]/countByAirRoute[[origin, destination]];;
+                if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
+                  maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
                 }
               });
               console.log(maxDelayForAirRoute);
@@ -390,15 +339,14 @@ $('svg circle').tipsy({
                   .attr("d", function(d) { return path(arc(d));})
                   .style("stroke", function(d) {
                     if (delayByAirRoute[[d.source, d.target]] >= 0) {
-                      return "hsl(0,100%," + delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*10 +"%)"; 
+                      return "hsl(0,100%," + delayByAirRoute[[d.source, d.target]]/200 +"%)"; 
                     }
                     else{
-                      return "hsl(100,100%," + -delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*10 +"%)";  
+                      return "hsl(100,100%," + -delayByAirRoute[[d.source, d.target]]/200 +"%)";  
                     }
                   })
                   .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / 10000; })
             });
-          }
           });
         });
     }
@@ -423,7 +371,7 @@ $('svg circle').tipsy({
                       stop();
                   }
                   updateYear();
-              }, 1800);
+              }, 900);
         }
       };
       // Stop the animation
@@ -434,10 +382,6 @@ $('svg circle').tipsy({
       }
 
     </script>
-
-<script language="JavaScript">
-
-</script>
 
 <script language="JavaScript">
 window.onload = function(){

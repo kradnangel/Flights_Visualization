@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- Plotly.js -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- Plotly chart will be drawn inside this DIV -->
+    <div id="myDiv"></div>
+    <script>
+        Plotly.d3.csv('data-total-flights/2008-total-flights.csv', function(err, rows){
+            function unpack(rows, key) {
+                return rows.map(function(row) { return row[key]; });}
+
+            function getMaxOfArray(numArray) {
+                return Math.max.apply(null, numArray);
+            }
+
+            var data = [];
+            var total = unpack(rows, 'Total');
+            var ori = unpack(rows, 'Origin');   //origin iata
+            var dest = unpack(rows, 'Dest');    //destination iata
+
+            Plotly.d3.csv('airports0.csv', function(err, infos){
+
+                var iata = unpack(infos, 'iata');
+                var airport = unpack(infos, 'airport');
+                var lat = unpack(infos, 'lat');
+                var long = unpack(infos, 'long');
+                var index = new Array();
+                for (var i = 0; i < iata.length; i++) {
+                    index[iata[i]] = i;
+                }
+
+                for ( var i = 0 ; i < total.length; i++ ) {
+                    var opacityValue = total[i]/getMaxOfArray(total);
+                    var startLongitude = long[index[ori[i]]];
+                    var endLongitude = long[index[dest[i]]]
+                    var startLat = lat[index[ori[i]]]
+                    var endLat = lat[index[dest[i]]]
+
+                    var result = {
+                        type: 'scattergeo',
+                        locationmode: 'USA-states',
+                        lon: [ startLongitude , endLongitude ],
+                        lat: [ startLat , endLat ],
+                        mode: 'lines',
+                        line: {
+                            width: 1,
+                            color: 'red'
+                        },
+                        opacity: opacityValue
+                    };
+
+                    data.push(result);
+                };
+
+                var layout = {
+                    title: 'Feb. 2011 American Airline flight paths',
+                    showlegend: false,
+                    geo:{
+                        scope: 'north america',
+                        projection: {
+                            type: 'azimuthal equal area'
+                        },
+                        showland: true,
+                        landcolor: 'rgb(243,243,243)',
+                        countrycolor: 'rgb(204,204,204)'
+                    },
+                    height: 750,
+                    width: 1000
+                };
+
+                Plotly.plot(myDiv, data, layout, {showLink: false});
+            });
+        });        
+
+
+
+    </script>
+</body>
+</html>
+
+            

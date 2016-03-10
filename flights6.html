@@ -90,7 +90,6 @@
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
     <script type="text/javascript" src="jquery.tipsy.js"></script>
     <link href="tipsy.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="d3/d3.js"></script>
@@ -204,15 +203,6 @@
             .sort(function(a, b) { return countByAirport[b.iata] - countByAirport[a.iata]; });
             // .append("svg:title")
             // .text("123");
-
-$('svg circle').tipsy({ 
-        gravity: 'w', 
-        html: true, 
-        title: function() {
-          c = "Blue"
-          return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>'; 
-        }
-      });
 
         if (!$("#showDelay").is(':checked')) {
                   var polygons = d3.geom.voronoi(positions);  //Returns an array of polygons, one for each input vertex in the specified data array. Each polygon is an array of points, and each point is a two-element array of x and y positions.
@@ -434,10 +424,6 @@ $('svg circle').tipsy({
       }
 
     </script>
-
-<script language="JavaScript">
-
-</script>
 
 <script language="JavaScript">
 window.onload = function(){
