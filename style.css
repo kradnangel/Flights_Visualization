@@ -5,7 +5,6 @@ body {
   margin: 20px 40px 20px 40px;
   overflow: hidden;
   position: relative;
-  width: 960px;
 }
 
 a:link, a:visited {
@@ -37,26 +36,10 @@ body > ul {
   padding: 0;
 }
 
-h1 {
-  font-size: 64px;
-}
-
-h1, h2, h3 {
-  font-weight: inherit;
-  margin: 0;
-}
-
-h2, h3 {
-  text-align: right;
-  font-size: inherit;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
 h2 {
+  text-align: left;
+  font-size: inherit;
   font-size: 24px;
-  position: absolute;
 }
 
 h3 {
@@ -70,7 +53,7 @@ input {
   margin: 10px;
 }
 select {
-  display: block;
+  /*display: block;*/
   font-size: 18px;
   margin: 10px;
 }
@@ -106,8 +89,16 @@ select {
   color: #1181B8;
 }
 
+.title {
+  text-align: right;
+}
+
 body > svg {
   position: absolute;
   top: -80px;
   left: 160px;
+}
+
+img {
+  margin-left: 10px;
 }

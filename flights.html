@@ -2,9 +2,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flights Information</title>
     <link type="text/css" rel="stylesheet" href="style.css"/>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style type="text/css">
 
     #states path {
@@ -46,48 +49,52 @@
   </head>
 
   <body>
-
-    <div>
-    <img id="play" src="play.png" alt="Play" onclick="playClick()">
-    <select id = 'year', name=YYYY onchange="YYYYMM(this.value)">
-    <option value="0">Year</option>  
-    <option value="1988" selected>1988</option>     </select>
-    <select id = 'month', name=MM onchange="MMDD(this.value)">
-    <option value="0">Month</option>    </select>
-    <select id = 'day', name=DD>
-    <option value="0">Day</option>      </select>
-    <button id ="check" onclick="updateYear()">check</button>
-    </div>
-
-    <div style="font-size:18px;">
-    <!-- <form action="form_action.asp" method="get"> -->
-      Origin: <input type="text" id="Origin" name="Origin" size="10" style="display: block;"/>
-      Destination: <input type="text" id="Destination" name="Destination" size="10" style="display: block;"/>
-      <button id ="check" onclick="updateAirport()">submit</button>
-    </div>
-      <!-- <input type="submit" value="Submit" /> -->
-    <!-- </form> -->
-<!-- <div class="row">
-<div class = "col-lg-4">
-  form
-</div>
-<div class = "col-lg-8">
-  <svg>
-</div>
-</div> -->
-
-    <h2>
+  <div class="container-fluid row">
+    <h2 class="title">
       <span>U.S. commercial airports</span> <span id = 'showYear'> 1988 </span><br>
     </h2>
-    <!-- <h3>Click on this text to update the chart with new data values (once).</h3> -->
+    <div class="col-md-3">
+      <div>
+        <select class="form-control" id = 'year', name=YYYY onchange="YYYYMM(this.value)">
+        <option value="0">Year</option>  
+        <option value="1988" selected>1988</option>     </select><br>
+        <select class="form-control" id = 'month', name=MM onchange="MMDD(this.value)">
+        <option value="0">Month <i>(Optional)</i></option>    </select><br>
+        <select class="form-control" id = 'day', name=DD>  
+        <option value="0">Day <i>(Optional)</i></option>      </select>
+        <br>
+        <button id ="check" class="btn btn-info" onclick="updateYear()">Refresh</button>
+        <img id="play" src="play.png" alt="Play" height="30" width="30" onclick="playClick()">
+      </div><br>
 
-    <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
-      <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
-    </div>
+      <div style="font-size:18px;">
+      <!-- <form action="form_action.asp" method="get"> -->
+        <input class="form-control" type="text" id="Origin" name="Origin" size="10" placeholder="From"/><br>
+        <input class="form-control" type="text" id="Destination" name="Destination" size="10" placeholder="To"/>
+        <button id ="check" class="btn btn-info" onclick="updateAirport()">Search</button>
+      </div>
+        <!-- <input type="submit" value="Submit" /> -->
+      <!-- </form> -->
+  <!-- <div class="row">
+  <div class = "col-lg-4">
+    form
+  </div>
+  <div class = "col-lg-8">
+    <svg>
+  </div>
+  </div> -->
 
-    <div style="font-size:18px;">
-      <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
+      <!-- <h3>Click on this text to update the chart with new data values (once).</h3> -->
+
+      <div>
+        <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
+      </div>
+
+      <div>
+        <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
+      </div>
     </div>
+  </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
