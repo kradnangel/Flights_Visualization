@@ -36,11 +36,6 @@ body > ul {
   padding: 0;
 }
 
-h2 {
-  text-align: left;
-  font-size: inherit;
-  font-size: 24px;
-}
 
 h3 {
   bottom: -20px;
@@ -58,6 +53,9 @@ select {
   margin: 10px;
 }
 
+img {
+  margin: 40px 0 0 0; 
+}
 
 .invert {
   background: #1f1f1f;
@@ -89,14 +87,20 @@ select {
   color: #1181B8;
 }
 
+
 .title {
   text-align: right;
 }
 
+.lineChart {
+margin: 70px 0 0 100px;
+
+}
+
 body > svg {
   position: absolute;
-  top: -80px;
-  left: 160px;
+  top: -40px;
+  left: 260px;
 }
 
 img {
