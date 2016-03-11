@@ -49,6 +49,7 @@
   </head>
 
   <body>
+
   <div class="container-fluid row">
     <h2 class="title">
       <span>U.S. commercial airports</span> <span id = 'showYear'> 1988 </span><br>
@@ -68,38 +69,26 @@
       </div><br>
 
       <div style="font-size:18px;">
-      <!-- <form action="form_action.asp" method="get"> -->
         <input class="form-control" type="text" id="Origin" name="Origin" size="10" placeholder="From"/><br>
         <input class="form-control" type="text" id="Destination" name="Destination" size="10" placeholder="To"/>
         <button id ="check" class="btn btn-info" onclick="updateAirport()">Search</button>
       </div>
-        <!-- <input type="submit" value="Submit" /> -->
-      <!-- </form> -->
-  <!-- <div class="row">
-  <div class = "col-lg-4">
-    form
-  </div>
-  <div class = "col-lg-8">
-    <svg>
-  </div>
-  </div> -->
 
-      <!-- <h3>Click on this text to update the chart with new data values (once).</h3> -->
-
-      <div>
+<!--       <div>
         <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
-      </div>
+      </div> -->
 
       <div>
         <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
       </div>
 
     </div>
+    <div id ="right" class="main col-md-9">
+      <div class="location"></div>
+    </div>
   </div>
 
-    <div id="chart" class = "lineChart"></div>
-
-
+  <div id="chart" class = "lineChart"></div>
 
     <!-- Load jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
@@ -113,21 +102,9 @@
     <script type="text/javascript" src="d3/d3.geo.js"></script>
     <script type="text/javascript" src="d3/d3.geom.js"></script>
 
-      <!-- <input type="submit" value="Submit" /> -->
-    <!-- </form> -->
-<!-- <div class="row">
-<div class = "col-lg-4">
-  form
-</div>
-<div class = "col-lg-8">
-  <svg>
-</div>
-</div> -->
-
-
     <!-- Main d3 code -->
     <script type="text/javascript">
-    var w = 1024,
+    var w = 960,
         h = 576;
 
     var MAX_YEAR = 2008;
@@ -146,7 +123,7 @@
         .projection(projection);
 
     //Create svg and define the width and height in HTML body
-    var svg = d3.select("body").insert("svg:svg", "h2")
+    var svg = d3.select("div.main").insert("svg:svg", "div.location")
         .attr("width", w)
         .attr("height", h);
 
