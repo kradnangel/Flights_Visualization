@@ -70,15 +70,15 @@
       <button id ="check" onclick="updateAirport()">submit</button>
     </div>
 
-    <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
+<!--     <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
       <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
-    </div>
+    </div> -->
 
     <div style="font-size:18px;">
       <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
     </div>
 
-    <div id="chart"></div>
+    <div id="chart" class = "lineChart"></div>
 
 
 
@@ -516,10 +516,14 @@ function IsPinYear(year)//判断是否闰平年
         width: 1000
     },
     data: {
+        x: 'x',
         columns: [
-        // ['x',1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008],
-        ['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
-        ]
+            ['x','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007'],
+            ['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
+        ],
+        names: {
+            y: 'Number of flights'
+        }
     },
     zoom: {
         enabled: true

@@ -111,6 +111,10 @@ img {
   color: #1181B8;
 }
 
+.lineChart {
+margin: 70px 0 0 100px;
+}
+
 body > svg {
   position: absolute;
   top: -40px;
