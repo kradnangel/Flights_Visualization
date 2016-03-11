@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flights</title>
+    <style type="text/css">
+    .legend span {
+        width: 33.333333%;
+        display: inline-block;
+        text-align: center;
+        cursor: pointer;
+        color: white;
+    }
+  </style>
+  </head>
+
+
+  <body>
+    <!-- <div id="chart"></div> -->
+    <div id="chart"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
+    <script type="text/javascript" src="jquery.tipsy.js"></script>
+    <link href="tipsy.css" rel="stylesheet" type="text/css" />
+
+    
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <script type="text/javascript" src="d3/d3.csv.js"></script>
+    <script type="text/javascript" src="d3/d3.geo.js"></script>
+    <script type="text/javascript" src="d3/d3.geom.js"></script>
+
+    <!-- Load c3.css -->
+    <link href="c3/c3.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="c3/c3.min.js"></script>
+
+
+    <script type="text/javascript">
+
+    var chart = c3.generate({
+    data: {
+        columns: [
+// ['x',1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008],
+['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
+
+        ]
+    },
+    tooltip: {
+        show: true
+    }
+    });
+
+    </script>
+
+  </body>
+</html>

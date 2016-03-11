@@ -47,6 +47,10 @@
 
   <body>
 
+    <h2>
+      <span>U.S. commercial airports</span> <span id = 'showYear'> 1988 </span><br>
+    </h2>
+
     <div>
     <img id="play" src="play.png" alt="Play" onclick="playClick()">
     <select id = 'year', name=YYYY onchange="YYYYMM(this.value)">
@@ -65,6 +69,31 @@
       Destination: <input type="text" id="Destination" name="Destination" size="10" style="display: block;"/>
       <button id ="check" onclick="updateAirport()">submit</button>
     </div>
+
+    <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
+      <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
+    </div>
+
+    <div style="font-size:18px;">
+      <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
+    </div>
+
+    <div id="chart"></div>
+
+
+
+    <!-- Load jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
+    <script type="text/javascript" src="jquery.tipsy.js"></script>
+    <link href="tipsy.css" rel="stylesheet" type="text/css" />
+
+    <!-- Load d3.js -->
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <script type="text/javascript" src="d3/d3.csv.js"></script>
+    <script type="text/javascript" src="d3/d3.geo.js"></script>
+    <script type="text/javascript" src="d3/d3.geom.js"></script>
+
       <!-- <input type="submit" value="Submit" /> -->
     <!-- </form> -->
 <!-- <div class="row">
@@ -76,31 +105,11 @@
 </div>
 </div> -->
 
-    <h2>
-      <span>U.S. commercial airports</span> <span id = 'showYear'> 1988 </span><br>
-    </h2>
-    <!-- <h3>Click on this text to update the chart with new data values (once).</h3> -->
 
-    <div style="position:absolute;display:inline;bottom:0;font-size:18px;">
-      <input type="checkbox" id="voronoi"> <label for="voronoi">show Voronoi</label>
-    </div>
-
-    <div style="font-size:18px;">
-      <input type="checkbox" id="showDelay"> <label for="showDelay">show Delay</label>
-    </div>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.6.2.min.js"></script> 
-    <script type="text/javascript" src="jquery.tipsy.js"></script>
-    <link href="tipsy.css" rel="stylesheet" type="text/css" />
-    <script type="text/javascript" src="d3/d3.js"></script>
-    <script type="text/javascript" src="d3/d3.csv.js"></script>
-    <script type="text/javascript" src="d3/d3.geo.js"></script>
-    <script type="text/javascript" src="d3/d3.geom.js"></script>
-    
+    <!-- Main d3 code -->
     <script type="text/javascript">
-    var w = 1280,
-        h = 720;
+    var w = 1024,
+        h = 576;
 
     var MAX_YEAR = 2008;
     var MIN_YEAR = 1989;
@@ -111,8 +120,8 @@
     var projection = d3.geo.azimuthal()
         .mode("equidistant")
         .origin([-96, 38])
-        .scale(1200)
-        .translate([640, 360]);
+        .scale(1100)
+        .translate([500, 300]);
 
     var path = d3.geo.path()
         .projection(projection);
@@ -121,7 +130,6 @@
     var svg = d3.select("body").insert("svg:svg", "h2")
         .attr("width", w)
         .attr("height", h);
-
 
     //// The order of creating elements is the order of layers
     // Draw US states map
@@ -142,6 +150,7 @@
     // About voronoi
     var cells = svg.append("svg:g")
         .attr("id", "cells");
+
 
     d3.select("input[type=checkbox]").on("change", function() {
       cells.classed("voronoi", this.checked);
@@ -205,14 +214,14 @@
             // .append("svg:title")
             // .text("123");
 
-$('svg circle').tipsy({ 
-        gravity: 'w', 
-        html: true, 
-        title: function() {
-          c = "Blue"
-          return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>'; 
-        }
-      });
+    // $('svg circle').tipsy({ 
+    //     gravity: 'w', 
+    //     html: true, 
+    //     title: function() {
+    //       c = "Blue"
+    //       return 'Hi there! My color is <span style="color:' + c + '">' + c + '</span>'; 
+    //     }
+    //   });
 
         if (!$("#showDelay").is(':checked')) {
                   var polygons = d3.geom.voronoi(positions);  //Returns an array of polygons, one for each input vertex in the specified data array. Each polygon is an array of points, and each point is a two-element array of x and y positions.
@@ -491,6 +500,34 @@ document.getElementById("day").outerHTML = s +"</select>";
 function IsPinYear(year)//判断是否闰平年
 { return(0 == year%4 && (year%100 !=0 || year%400 == 0))}
 </script>
+
+    
+    <!-- Load c3.css -->
+    <link href="c3/c3.css" rel="stylesheet" type="text/css">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="c3/c3.min.js"></script>
+    <script type="text/javascript">
+
+    var chart = c3.generate({
+    size: {
+        height: 200,
+        width: 1000
+    },
+    data: {
+        columns: [
+        // ['x',1988,1989,1990,1991,1992,1993,1994,1995,1996,1997,1998,1999,2000,2001,2002,2003,2004,2005,2006,2007,2008],
+        ['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
+        ]
+    },
+    zoom: {
+        enabled: true
+    }
+    });
+
+    </script>
+
 
   </body>
 </html>
