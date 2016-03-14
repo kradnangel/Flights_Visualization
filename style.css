@@ -36,12 +36,6 @@ body > ul {
   padding: 0;
 }
 
-
-h3 {
-  bottom: -20px;
-  font-size: 18px;
-}
-
 input {
   /*display: block;*/
   font-size: 18px;
@@ -51,6 +45,10 @@ select {
   /*display: block;*/
   font-size: 18px;
   margin: 10px;
+}
+
+button {
+  margin: 20px; 
 }
 
 img {
@@ -64,6 +62,10 @@ img {
 
 .invert h2, .invert h3 {
   color: #7f9f7f;
+}
+
+h4 {
+  height: 80;
 }
 
 .string, .regexp {
@@ -96,6 +98,44 @@ img {
 margin: 70px 0 0 100px;
 
 }
+
+
+
+    .my-legend .legend-title {
+    text-align: left;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 90%;
+    }
+  .my-legend .legend-scale ul {
+    margin: 0;
+    padding: 0;
+    float: left;
+    list-style: none;
+    }
+  .my-legend .legend-scale ul li {
+    display: block;
+    float: left;
+    width: 55px;
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 80%;
+    list-style: none;
+    }
+  .my-legend ul.legend-labels li span {
+    display: block;
+    float: left;
+    height: 15px;
+    width: 55px;
+    }
+  .my-legend .legend-source {
+    font-size: 70%;
+    color: #999;
+    clear: both;
+    }
+  .my-legend a {
+    color: #777;
+    }
 
 body > svg {
   position: absolute;
