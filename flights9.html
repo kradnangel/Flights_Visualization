@@ -94,7 +94,7 @@
       <div style="font-size:18px;">
         <input class="form-control" type="text" id="Origin" name="Origin" size="10" placeholder="From"/><br>
         <input class="form-control" type="text" id="Destination" name="Destination" size="10" placeholder="To"/>
-        <button id ="check" class="btn btn-info" onclick="updateAirport('')">Search</button>
+        <button id ="check" class="btn btn-info" onclick="updateAirport()">Search</button>
       </div>
 
       <div>
@@ -138,7 +138,7 @@
     var MIN_YEAR = 1989;
     var CIRCLE_SIZE = 40;
     var LINE_WIDTH = 10000;
-    var DELAY_RATIO = 2;
+    var DELAY_RATIO = 3;
 
     var year = 1988;    
 
@@ -154,8 +154,7 @@
     //Create svg and define the width and height in HTML body
     var svg = d3.select("div.main").insert("svg:svg", "div.location")
         .attr("width", w)
-        .attr("height", h)
-        // .on("mouseleave", function() {$("#Origin").val('');updateAirport('');});
+        .attr("height", h);
 
     //// The order of creating elements is the order of layers
     // Draw US states map
@@ -188,7 +187,6 @@
               .selectAll("path.arc")
             .data(function(d) { return linksByOrigin[d.iata] || []; })
             .attr("d", function(d) { return path(arc(d));})
-            .style("display", "inline")
             .style("stroke", "#000")
             .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / LINE_WIDTH; });
       } else {
@@ -196,13 +194,12 @@
               .selectAll("path.arc")
             .data(function(d) { return linksByOrigin[d.iata] || []; })
             .attr("d", function(d) { return path(arc(d));})
-            // .style("display", "inline")
             .style("stroke", function(d) {
               if (delayByAirRoute[[d.source, d.target]] >= 0) {
-                return "hsl(0,100%," + (25+delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*DELAY_RATIO) +"%)"; 
+                return "hsl(0,100%," + delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*DELAY_RATIO +"%)"; 
               }
               else{
-                return "hsl(100,100%,50%)";  
+                return "hsl(100,100%," + -delayByAirRoute[[d.source, d.target]]/countByAirRoute[[d.source, d.target]]*DELAY_RATIO*10 +"%)";  
               }
             })
             .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / LINE_WIDTH; })
@@ -218,11 +215,7 @@
         delayByAirRoute = {},
         maxNumOfFlights = 1,
         maxNumOfFlightsForAirRoute = 1,
-        maxDelayForAirRoute = 1,
-        delayPerMonth = {},
-        onTimePerMonth = {},
-        delayPerDay = {},
-        onTimePerDay = {};
+        maxDelayForAirRoute = 1;
 
     var arc = d3.geo.greatArc()
         .source(function(d) { return locationByAirport[d.source]; })
@@ -234,39 +227,27 @@
       flights.forEach(function(flight) {
         var origin = flight.Origin.substring(1),
             destination = flight.Dest.substring(1),
-            total = Number(flight.Flgihts),
-            delay = Number(flight.Delay),
-            links = linksByOrigin[origin] || (linksByOrigin[origin] = []),
-            month = Number(flight.Month),
-            day = Number(flight.DayofMonth);
-            if (delay > 0) {
-              delayPerDay[[month,day]] = (delayPerDay[[month,day]] || 0) + total;
-              delayPerMonth[month] = (delayPerMonth[month] || 0) + total;
-            } else {
-              onTimePerDay[[month,day]] = (onTimePerDay[[month,day]] || 0) + total;
-              onTimePerMonth[month] = (onTimePerMonth[month] || 0) + total;              
-            }
+            total = Number(flight.Flgihts)
+            delay = Number(flight.Delay)
+            links = linksByOrigin[origin] || (linksByOrigin[origin] = []);
+        
+        if (!countByAirRoute[[origin,destination]]) {
+          links.push({source: origin, target: destination});
+        }
+        countByAirport[origin] = (countByAirport[origin] || 0) + total;
+        countByAirport[destination] = (countByAirport[destination] || 0) + total;
+        countByAirRoute[[origin,destination]] = (countByAirRoute[[origin,destination]] || 0) + total;
 
-
-        // if ( (($("#month").val() == 0) || ($("#month").val() == month)) && (($("#day").val() == 0) || ($("#day").val() == day)) ) {
-          if (!countByAirRoute[[origin,destination]]) {
-            links.push({source: origin, target: destination});
-          }
-          countByAirport[origin] = (countByAirport[origin] || 0) + total;
-          countByAirport[destination] = (countByAirport[destination] || 0) + total;
-          countByAirRoute[[origin,destination]] = (countByAirRoute[[origin,destination]] || 0) + total;
-
-          delayByAirport[origin] = (delayByAirport[origin] || 0) + delay;
-          delayByAirport[destination] = (delayByAirport[destination] || 0) + delay;
-          delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + delay;
-          
-          if (maxNumOfFlightsForAirRoute < countByAirRoute[[origin,destination]]) {
-            maxNumOfFlightsForAirRoute = countByAirRoute[[origin,destination]];
-          }
-          if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
-            maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
-          }  
-        // }
+        delayByAirport[origin] = (delayByAirport[origin] || 0) + delay;
+        delayByAirport[destination] = (delayByAirport[destination] || 0) + delay;
+        delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + delay;
+        
+        if (maxNumOfFlightsForAirRoute < countByAirRoute[[origin,destination]]) {
+          maxNumOfFlightsForAirRoute = countByAirRoute[[origin,destination]];
+        }
+        if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
+          maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
+        }  
       });
       //// Read airports information and do layout
       d3.csv("airports_info.csv", function(airports) {
@@ -317,36 +298,30 @@
         g.append("svg:path")
             .attr("class", "cell")  //path.cell css
             .attr("d", function(d, i) { return "M" + polygons[i].join("L") + "Z"; })
-            .on("mouseover", function(d, i) { d3.select("h2 span").text(d.airport); })
-            .on("click", function(d, i) {updateAirport(d.iata);}); // text the airport mouseovered 
-            
-            
+            .on("mouseover", function(d, i) { d3.select("h2 span").text(d.airport); }); // text the airport mouseovered 
+
         // draw connection based on path
         g.selectAll("path.arc")
             .data(function(d) {return linksByOrigin[d.iata] || []; })  //all air route here ???
           .enter().append("svg:path")
             .attr("d", function(d) { return path(arc(d));}) // draw lines!!!
             .attr("class", "arc")
-            .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / LINE_WIDTH; });       
-        showChart();
+            .style("stroke-width", function(d) {return countByAirRoute[[d.source, d.target]] / LINE_WIDTH; });        
       });
     });
 
-    updateAirport = function(over) {
+    updateAirport = function() {
     var source = $("#Origin").val();
-    if (over != '') {
-      source = over;
-      // $("#Origin").val(over);
-    }
     var target = $("#Destination").val();
+    console.log(target);
+    console.log(target == "");
     cells.selectAll("g")
           .selectAll("path.arc")
         .data(function(d) { return linksByOrigin[d.iata] || []; })
         .attr("d", function(d) { return path(arc(d));})
         .style("display", function(d) { 
-          if ( ( (d.source == source) && ((target == "") || (d.target == target)) ) || ( (d.target == target) && ((source == "") || (d.source == source)) )   || ((source == "") && (target == "")) )
-            {return "inline"; }
-          else return "none";
+          if ( ( (d.source == source) && ((target == "") || (d.target == target)) ) || ( (d.target == target) && ((source == "") || (d.source == source)) ) )
+            return "inline"; else return "none";
         });
     }
 
@@ -364,48 +339,32 @@
               delayByAirRoute = {},
               maxNumOfFlights = 1,
               maxNumOfFlightsForAirRoute = 1,
-              maxDelayForAirRoute = 1,
-              delayPerMonth = {},
-              onTimePerMonth = {},
-              delayPerDay = {},
-              onTimePerDay = {};
+              maxDelayForAirRoute = 1;          
               // Read and process each flight information
               flights.forEach(function(flight) {
                 var origin = flight.Origin.substring(1),
                     destination = flight.Dest.substring(1),
                     total = Number(flight.Flgihts)
                     delay = Number(flight.Delay)
-                    links = linksByOrigin[origin] || (linksByOrigin[origin] = []),
-                    month = Number(flight.Month),
-                    day = Number(flight.DayofMonth);
-
-                    if (delay > 0) {
-                      delayPerDay[[month,day]] = (delayPerDay[[month,day]] || 0) + total;
-                      delayPerMonth[month] = (delayPerMonth[month] || 0) + total;
-                    } else {
-                      onTimePerDay[[month,day]] = (onTimePerDay[[month,day]] || 0) + total;
-                      onTimePerMonth[month] = (onTimePerMonth[month] || 0) + total;              
-                    }
-
-                if ( (($("#month").val() == 0) || ($("#month").val() == month)) && (($("#day").val() == 0) || ($("#day").val() == day)) ) {
-                  if (!countByAirRoute[[origin,destination]]) {
-                    links.push({source: origin, target: destination});
-                  }
-                  countByAirport[origin] = (countByAirport[origin] || 0) + total;
-                  countByAirport[destination] = (countByAirport[destination] || 0) + total;
-                  countByAirRoute[[origin,destination]] = (countByAirRoute[[origin,destination]] || 0) + total;
-
-                  delayByAirport[origin] = (delayByAirport[origin] || 0) + delay;
-                  delayByAirport[destination] = (delayByAirport[destination] || 0) + delay;
-                  delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + delay;
-                  
-                  if (maxNumOfFlightsForAirRoute < countByAirRoute[[origin,destination]]) {
-                    maxNumOfFlightsForAirRoute = countByAirRoute[[origin,destination]];
-                  }
-                  if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
-                    maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
-                  }  
+                    links = linksByOrigin[origin] || (linksByOrigin[origin] = []);
+                
+                if (!countByAirRoute[[origin,destination]]) {
+                  links.push({source: origin, target: destination});
                 }
+                countByAirport[origin] = (countByAirport[origin] || 0) + total;
+                countByAirport[destination] = (countByAirport[destination] || 0) + total;
+                countByAirRoute[[origin,destination]] = (countByAirRoute[[origin,destination]] || 0) + total;
+
+                delayByAirport[origin] = (delayByAirport[origin] || 0) + delay;
+                delayByAirport[destination] = (delayByAirport[destination] || 0) + delay;
+                delayByAirRoute[[origin,destination]] = (delayByAirRoute[[origin,destination]] || 0) + delay;
+                
+                if (maxNumOfFlightsForAirRoute < countByAirRoute[[origin,destination]]) {
+                  maxNumOfFlightsForAirRoute = countByAirRoute[[origin,destination]];
+                }
+                if (maxDelayForAirRoute < delayByAirRoute[[origin,destination]]) {
+                  maxDelayForAirRoute = delayByAirRoute[[origin,destination]];
+                }  
               });
           //// Read airports information and do layout
           d3.csv("airports_info.csv", function(airports) {
@@ -434,7 +393,6 @@
                 .attr("r", function(d, i) { return Math.sqrt(countByAirport[d.iata]) / CIRCLE_SIZE; })  //   / maxNumOfFlights
                 .sort(function(a, b) { return countByAirport[b.iata] - countByAirport[a.iata]; });
             delayShow();
-            showChart();
           });
         });
     }
@@ -481,7 +439,7 @@ window.onload = function(){
     strMM = document.getElementById("month").outerHTML;
     strDD = document.getElementById("day").outerHTML;
     MonHead = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-    MonthName = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+    MonthName = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
     //year
     var str = strYYYY.substring(0, strYYYY.length - 9);
@@ -537,55 +495,27 @@ function IsPinYear(year)//判断是否闰平年
     <script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="c3/c3.min.js"></script>
     <script type="text/javascript">
-    showChart = function () {
-      var data1 = ['data1'],
-          data2 = ['data2'],
-          xx = ['x'].concat(MonthName),
-          currentMonth = $("#month").val();
-      if (currentMonth == 0) {
-        for (var i = 1; i <= 12; i++) {
-          data1.push(delayPerMonth[i]);
-          data2.push(onTimePerMonth[i]);
+
+    var chart = c3.generate({
+    size: {
+        height: 200,
+        width: 1000
+    },
+    data: {
+        x: 'x',
+        columns: [
+            ['x','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007'],
+            ['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
+        ],
+        names: {
+            y: 'Number of flights'
         }
-      } else {
-        for (var i = 1; i<= MonHead[currentMonth]; i ++) {
-          data1.push(delayPerDay[[currentMonth,i]]);
-          data2.push(onTimePerDay[[currentMonth,i]]);
-        }
-      }
-      var chart = c3.generate({
-      size: {
-          height: 200,
-          width: 1000
-      },
-      data: {
-          // x: 'xx',
-          json: {
-              // ['x','1988','1989','1990','1991','1992','1993','1994','1995','1996','1997','1998','1999','2000','2001','2002','2003','2004','2005','2006','2007'],
-              // ['y',5202096,5041200,5270893,5076925,5092157,5070501,5180048,5327435,5351983,5411843,5384721,5527884,5683047,5967780,5271359,6488540,7129270,7140596,7141922,7453215]
-              // xx : MonthName,
-              data1: data1,
-              data2: data2
-          },
-          types: {
-            data1: 'area-spline',
-            data2: 'area-spline'
-          },
-          groups: [['data2', 'data1']],
-          names: {
-              data1: 'Number of flights -- Delay',
-              data2: 'Number of flights -- On Time'
-          },
-          colors: {
-            data1: 'hsl(0,100%,50%)',
-            data2: 'hsl(100,100%,50%)'
-          }
-      },
-      zoom: {
-          enabled: true
-      }
-      });
+    },
+    zoom: {
+        enabled: true
     }
+    });
+
     </script>
 
 
